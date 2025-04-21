@@ -37,7 +37,7 @@ const initializeDatabase = async () => {
       )
     `);
 
-    // Documents table
+    // Documents table with public_token field
     await pool.query(`
       CREATE TABLE IF NOT EXISTS documents (
         id SERIAL PRIMARY KEY,
@@ -54,6 +54,21 @@ const initializeDatabase = async () => {
         FOREIGN KEY (user_id) REFERENCES users (id)
       )
     `);
+
+    // Check if public_token column exists, add if it doesn't
+    try {
+      await pool.query(`
+        SELECT public_token FROM documents LIMIT 1
+      `);
+    } catch (err) {
+      if (err.code === '42703') { // Undefined column error code
+        console.log('Adding public_token column to documents table');
+        await pool.query(`
+          ALTER TABLE documents 
+          ADD COLUMN public_token VARCHAR(255) UNIQUE
+        `);
+      }
+    }
 
     // Check if admin user exists and create if not
     const bcrypt = require('bcryptjs');

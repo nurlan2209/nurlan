@@ -17,6 +17,8 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Documents from './pages/Documents/Documents';
 import DocumentView from './pages/Documents/DocumentView';
 import DocumentForm from './pages/Documents/DocumentForm';
+import Profile from './pages/Profile/Profile';
+import ChangePassword from './pages/ChangePassword/ChangePassword';
 
 // Административные страницы
 import AdminDashboard from './pages/Admin/AdminDashboard';

@@ -1,4 +1,4 @@
-// server/routes/documents.js - обновленный с поддержкой публичных токенов
+// server/routes/documents.js
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
@@ -89,10 +89,10 @@ router.get('/public/:token', async (req, res) => {
     const document = result.rows[0];
     
     if (!document) {
-      return res.status(404).json({ message: 'Құжат табылмады' });
+      return res.status(404).json({ message: 'Құжат табылмады немесе жарамсыз' });
     }
     
-    // Возвращаем базовую информацию, подходящую для публичного просмотра
+    // Возвращаем базовую информацию для публичного просмотра
     res.json({
       id: document.id,
       doc_type: document.doc_type,
@@ -101,6 +101,8 @@ router.get('/public/:token', async (req, res) => {
       issue_date: document.issue_date,
       expiry_date: document.expiry_date,
       owner_name: document.owner_name,
+      verified: true,
+      verification_date: new Date()
       // Не возвращаем приватные поля
     });
   } catch (err) {
@@ -109,7 +111,7 @@ router.get('/public/:token', async (req, res) => {
   }
 });
 
-// Құжатты QR-кодын алу с поддержкой публичных ссылок
+// Құжаттың QR-кодын алу с поддержкой публичных ссылок
 router.get('/:id/qrcode', auth, async (req, res) => {
   try {
     const result = await db.query(
@@ -137,12 +139,20 @@ router.get('/:id/qrcode', auth, async (req, res) => {
     }
 
     // Создаем полный URL для публичного просмотра
-    const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // или ваш реальный домен
+    const baseUrl = process.env.BASE_URL || 'https://eduidwallet.kz'; // или ваш реальный домен
     const publicUrl = `${baseUrl}/verify/${publicToken}`;
 
     // Генерируем QR-код из URL
-    const qrCodeDataURL = await QRCode.toDataURL(publicUrl);
-    res.json({ qrCode: qrCodeDataURL, publicUrl });
+    const qrCodeDataURL = await QRCode.toDataURL(publicUrl, {
+      errorCorrectionLevel: 'H',
+      margin: 2,
+      color: {
+        dark: '#1a73e8',  // Синий цвет для QR-кода
+        light: '#ffffff'  // Белый фон
+      }
+    });
+    
+    res.json({ qrCode: qrCodeDataURL, publicUrl, publicToken });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'QR кодын жасау кезінде қате орын алды' });

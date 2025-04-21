@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { FaIdCard, FaExclamationTriangle, FaCheck, FaCalendarAlt } from 'react-icons/fa';
+import { useParams, Link } from 'react-router-dom';
+import { FaIdCard, FaExclamationTriangle, FaCheck, FaCalendarAlt, FaShieldAlt, FaDownload } from 'react-icons/fa';
 import axios from 'axios';
 import './PublicDocumentView.css';
 
@@ -75,7 +75,10 @@ const PublicDocumentView = () => {
   return (
     <div className="public-document-container">
       {loading ? (
-        <div className="loading-spinner">Құжат жүктелуде...</div>
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+          <p>Құжат жүктелуде...</p>
+        </div>
       ) : error ? (
         <div className="error-container">
           <FaExclamationTriangle className="error-icon" />
@@ -86,6 +89,7 @@ const PublicDocumentView = () => {
         <div className="public-document-card">
           <div className="public-document-header">
             <div className="verification-badge">
+              <FaShieldAlt className="verification-icon" />
               <span className="verification-text">Расталған құжат</span>
             </div>
             <h2 className="public-document-title">Құжат мәліметтері</h2>
@@ -144,9 +148,35 @@ const PublicDocumentView = () => {
               )}
             </div>
             
+            {document.file_path && (
+              <div className="document-file-section">
+                <h4>Құжат файлы</h4>
+                <a 
+                  href={`${BASE_URL}${document.file_path}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="document-file-link"
+                >
+                  <FaDownload /> Жүктеу
+                </a>
+              </div>
+            )}
+
             <div className="verification-info">
-              <p>Бұл құжат электрондық түрде расталған және жарамды.</p>
-              <p className="verification-date">Тексерілген күні: {formatDate(new Date())}</p>
+              <div className="verification-seal">
+                <FaShieldAlt className="seal-icon" />
+              </div>
+              <div className="verification-text-content">
+                <p>Бұл құжат электрондық түрде расталған және жарамды.</p>
+                <p className="verification-date">Тексерілген күні: {formatDate(new Date())}</p>
+              </div>
+            </div>
+
+            <div className="back-to-app">
+              <p>Цифрлық құжаттар әмиянына өтіңіз:</p>
+              <Link to="/" className="app-button">
+                <FaIdCard /> EduID Wallet қолданбасына өту
+              </Link>
             </div>
           </div>
         </div>

@@ -117,7 +117,7 @@ const Dashboard = () => {
                   <h3 className="group-title">{type}</h3>
                   <div className="documents-grid">
                     {docs.map(doc => (
-                      <Link to={`/documents/${doc.id}`} key={doc.id} className="document-card">
+                      <Link to={`/documents`} key={doc.id} className="document-card">
                         <div className="document-icon">
                           <FaIdCard />
                         </div>
