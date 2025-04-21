@@ -1,0 +1,139 @@
+.notification {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    min-width: 300px;
+    max-width: 400px;
+    animation: slide-in 0.3s ease-out forwards;
+  }
+  
+  .notification.visible {
+    animation: slide-in 0.3s ease-out forwards;
+  }
+  
+  .notification-top-right {
+    top: 20px;
+    right: 20px;
+  }
+  
+  .notification-top-left {
+    top: 20px;
+    left: 20px;
+  }
+  
+  .notification-bottom-right {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .notification-bottom-left {
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .notification-top-center {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .notification-bottom-center {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .notification-icon {
+    margin-right: 12px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .notification-content {
+    flex: 1;
+    font-size: 14px;
+  }
+  
+  .notification-close {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  
+  .notification-close:hover {
+    opacity: 1;
+  }
+  
+  .notification-info {
+    background-color: #e6f7ff;
+    border-left: 4px solid #1890ff;
+    color: #0050b3;
+  }
+  
+  .notification-info .notification-icon {
+    color: #1890ff;
+  }
+  
+  .notification-success {
+    background-color: #f6ffed;
+    border-left: 4px solid #52c41a;
+    color: #135200;
+  }
+  
+  .notification-success .notification-icon {
+    color: #52c41a;
+  }
+  
+  .notification-warning {
+    background-color: #fffbe6;
+    border-left: 4px solid #faad14;
+    color: #874d00;
+  }
+  
+  .notification-warning .notification-icon {
+    color: #faad14;
+  }
+  
+  .notification-error {
+    background-color: #fff2f0;
+    border-left: 4px solid #ff4d4f;
+    color: #a8071a;
+  }
+  
+  .notification-error .notification-icon {
+    color: #ff4d4f;
+  }
+  
+  @keyframes slide-in {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slide-out {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }

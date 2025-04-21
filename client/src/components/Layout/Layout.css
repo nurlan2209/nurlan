@@ -1,0 +1,32 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .content-wrapper {
+    display: flex;
+    flex: 1;
+    margin-top: 70px;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 0px;
+    transition: margin-left 0.3s;
+  }
+  
+  .main-content.with-sidebar {
+    margin-left: 250px;
+  }
+  
+  @media (max-width: 768px) {
+    .main-content.with-sidebar {
+      margin-left: 0;
+      margin-top: -10px;
+    }
+    
+    .sidebar.open + .main-content {
+      opacity: 0.8;
+    }
+  }

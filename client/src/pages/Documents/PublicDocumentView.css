@@ -1,0 +1,136 @@
+.public-document-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .public-document-card {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .public-document-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .public-document-title {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .verification-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 5px 15px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  
+  .verification-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .owner-photo-section {
+    margin-top: -50px;
+    text-align: center;
+    padding: 0 20px;
+    margin-bottom: 20px;
+  }
+  
+  .owner-photo-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .owner-photo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .owner-name {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: var(--text-color);
+  }
+  
+  .public-document-content {
+    padding: 20px;
+  }
+  
+  .verification-info {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+  
+  .verification-date {
+    font-size: 0.8rem;
+    margin-top: 5px;
+  }
+  
+  .error-container {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .error-icon {
+    font-size: 40px;
+    color: var(--error-color);
+    margin-bottom: 15px;
+  }
+  
+  .loading-spinner {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-light);
+  }
+  
+  /* Адаптивные стили */
+  @media (max-width: 576px) {
+    .public-document-container {
+      padding: 10px;
+    }
+    
+    .document-view-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .document-icon.large {
+      margin-right: 0;
+      margin-bottom: 15px;
+    }
+    
+    .detail-row {
+      flex-direction: column;
+    }
+    
+    .detail-row .detail-label {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+  }
+  
