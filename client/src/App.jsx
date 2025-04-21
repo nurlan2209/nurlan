@@ -10,18 +10,13 @@ import About from './pages/About/About';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import NotFound from './pages/NotFound/NotFound';
+import PublicDocumentView from './pages/Documents/PublicDocumentView';
 
 // Защищенные страницы пользователя
 import Dashboard from './pages/Dashboard/Dashboard';
 import Documents from './pages/Documents/Documents';
 import DocumentView from './pages/Documents/DocumentView';
 import DocumentForm from './pages/Documents/DocumentForm';
-import PublicDocumentView from './pages/Documents/PublicDocumentView';
-// В компоненте с маршрутами добавьте:
-<Route path="/verify/:token" element={<PublicDocumentView />} />
-
-import Profile from './pages/Profile/Profile';
-import ChangePassword from './pages/ChangePassword/ChangePassword';
 
 // Административные страницы
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -39,6 +34,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify/:token" element={<PublicDocumentView />} />
 
         {/* Защищенные маршруты пользователя */}
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
@@ -46,7 +42,6 @@ function App() {
         <Route path="/documents/:id" element={<PrivateRoute><DocumentView /></PrivateRoute>} />
         <Route path="/documents/add" element={<PrivateRoute><DocumentForm /></PrivateRoute>} />
         <Route path="/documents/edit/:id" element={<PrivateRoute><DocumentForm /></PrivateRoute>} />
-        <Route path="/verify/:token" element={<PublicDocumentView />} />
         <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
         <Route path="/change-password" element={<PrivateRoute><ChangePassword /></PrivateRoute>} />
 

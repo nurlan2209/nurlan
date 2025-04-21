@@ -1,3 +1,4 @@
+// server/middleware/auth.js
 const jwt = require('jsonwebtoken');
 
 // JWT құпия кілті
@@ -22,13 +23,4 @@ const auth = (req, res, next) => {
   }
 };
 
-// Әкімші құқығын тексеру middleware
-const admin = (req, res, next) => {
-  if (req.user && req.user.is_admin) {
-    next();
-  } else {
-    res.status(403).json({ message: 'Әкімші құқығы жоқ' });
-  }
-};
-
-module.exports = { auth, admin };
+module.exports = { auth };

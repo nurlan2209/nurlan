@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaIdCard, FaExclamationTriangle } from 'react-icons/fa';
+import { FaIdCard, FaExclamationTriangle, FaCheck, FaCalendarAlt } from 'react-icons/fa';
 import axios from 'axios';
 import './PublicDocumentView.css';
 
@@ -38,24 +38,24 @@ const PublicDocumentView = () => {
   }, [BASE_URL, token]);
 
   // Проверка срока действия документа
-  const isExpiringSoon = (expiryDate) => {
-    if (!expiryDate) return false;
+  const getDocumentStatus = () => {
+    if (!document || !document.expiry_date) return null;
     
     const today = new Date();
-    const expiry = new Date(expiryDate);
+    const expiry = new Date(document.expiry_date);
+    
+    if (expiry < today) {
+      return { status: 'expired', text: 'Мерзімі өткен', icon: <FaExclamationTriangle /> };
+    }
+    
     const diffTime = expiry - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
-    return diffDays > 0 && diffDays <= 30; // Срок истекает в течение 30 дней
-  };
-
-  const isExpired = (expiryDate) => {
-    if (!expiryDate) return false;
+    if (diffDays <= 30) {
+      return { status: 'expiring-soon', text: `${diffDays} күннен кейін мерзімі бітеді`, icon: <FaExclamationTriangle /> };
+    }
     
-    const today = new Date();
-    const expiry = new Date(expiryDate);
-    
-    return expiry < today;
+    return { status: 'valid', text: 'Жарамды', icon: <FaCheck /> };
   };
 
   // Форматирование даты
@@ -70,17 +70,7 @@ const PublicDocumentView = () => {
     });
   };
 
-  // Определение статуса документа для отображения
-  const getDocumentStatus = (doc) => {
-    if (isExpired(doc.expiry_date)) {
-      return { className: 'expired', text: 'Мерзімі өткен' };
-    } else if (isExpiringSoon(doc.expiry_date)) {
-      return { className: 'expiring-soon', text: 'Мерзімі жақында бітеді' };
-    } else if (doc.expiry_date) {
-      return { className: 'valid', text: 'Жарамды' };
-    }
-    return null;
-  };
+  const documentStatus = document ? getDocumentStatus() : null;
 
   return (
     <div className="public-document-container">
@@ -101,20 +91,6 @@ const PublicDocumentView = () => {
             <h2 className="public-document-title">Құжат мәліметтері</h2>
           </div>
           
-          {/* Фото владельца */}
-          {document.owner_photo && (
-            <div className="owner-photo-section">
-              <div className="owner-photo-wrapper">
-                <img 
-                  src={document.owner_photo} 
-                  alt="Иесінің фотосы" 
-                  className="owner-photo"
-                />
-              </div>
-              <h3 className="owner-name">{document.owner_name || 'Құжат иесі'}</h3>
-            </div>
-          )}
-          
           <div className="public-document-content">
             <div className="document-view-header">
               <div className="document-icon large">
@@ -127,9 +103,9 @@ const PublicDocumentView = () => {
                 </p>
                 
                 {/* Статус документа */}
-                {getDocumentStatus(document) && (
-                  <div className={`document-status-badge ${getDocumentStatus(document).className}`}>
-                    {getDocumentStatus(document).text}
+                {documentStatus && (
+                  <div className={`document-status-badge ${documentStatus.status}`}>
+                    {documentStatus.icon} {documentStatus.text}
                   </div>
                 )}
               </div>
@@ -160,25 +136,13 @@ const PublicDocumentView = () => {
                 </div>
               )}
               
-              {document.issuing_authority && (
+              {document.owner_name && (
                 <div className="detail-row">
-                  <div className="detail-label">Берген орган:</div>
-                  <div className="detail-value">{document.issuing_authority}</div>
+                  <div className="detail-label">Иесі:</div>
+                  <div className="detail-value">{document.owner_name}</div>
                 </div>
               )}
             </div>
-            
-            {/* Если есть изображение документа */}
-            {document.document_image && (
-              <div className="document-image-container">
-                <h4>Құжат суреті</h4>
-                <img 
-                  src={document.document_image} 
-                  alt="Құжат суреті" 
-                  className="document-image"
-                />
-              </div>
-            )}
             
             <div className="verification-info">
               <p>Бұл құжат электрондық түрде расталған және жарамды.</p>

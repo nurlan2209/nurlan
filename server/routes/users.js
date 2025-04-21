@@ -14,7 +14,7 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Multer конфигурациясы - добавляем эту часть, она отсутствовала
+// Multer конфигурациясы
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
@@ -43,22 +43,28 @@ const upload = multer({
 });
 
 // Қазіргі пайдаланушы туралы ақпаратты алу
-router.get('/me', auth, (req, res) => {
-  db.get('SELECT id, username, email, full_name, iin, is_admin FROM users WHERE id = ?', [req.user.id], (err, user) => {
-    if (err) {
-      return res.status(500).json({ message: 'Серверде қате орын алды' });
-    }
+router.get('/me', auth, async (req, res) => {
+  try {
+    const result = await db.query(
+      'SELECT id, username, email, full_name, iin, is_admin FROM users WHERE id = $1', 
+      [req.user.id]
+    );
+    
+    const user = result.rows[0];
     
     if (!user) {
       return res.status(404).json({ message: 'Пайдаланушы табылмады' });
     }
 
     res.json(user);
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Серверде қате орын алды' });
+  }
 });
 
 // Пайдаланушы профилін жаңарту
-router.put('/me', auth, (req, res) => {
+router.put('/me', auth, async (req, res) => {
   const { full_name, email } = req.body;
 
   // Деректерді тексеру
@@ -66,39 +72,38 @@ router.put('/me', auth, (req, res) => {
     return res.status(400).json({ message: 'Барлық қажетті өрістерді толтырыңыз' });
   }
 
-  // Email бірегейлігін тексеру
-  db.get('SELECT * FROM users WHERE email = ? AND id != ?', [email, req.user.id], (err, user) => {
-    if (err) {
-      return res.status(500).json({ message: 'Серверде қате орын алды' });
-    }
+  try {
+    // Email бірегейлігін тексеру
+    const emailCheck = await db.query(
+      'SELECT * FROM users WHERE email = $1 AND id != $2', 
+      [email, req.user.id]
+    );
     
-    if (user) {
+    if (emailCheck.rows.length > 0) {
       return res.status(400).json({ message: 'Бұл email бұрыннан бар' });
     }
 
     // Пайдаланушыны жаңарту
-    db.run(
-      'UPDATE users SET full_name = ?, email = ? WHERE id = ?',
-      [full_name, email, req.user.id],
-      function(err) {
-        if (err) {
-          return res.status(500).json({ message: 'Профильді жаңарту кезінде қате орын алды' });
-        }
-
-        res.json({
-          id: req.user.id,
-          username: req.user.username,
-          email,
-          full_name,
-          is_admin: req.user.is_admin
-        });
-      }
+    await db.query(
+      'UPDATE users SET full_name = $1, email = $2 WHERE id = $3',
+      [full_name, email, req.user.id]
     );
-  });
+
+    res.json({
+      id: req.user.id,
+      username: req.user.username,
+      email,
+      full_name,
+      is_admin: req.user.is_admin
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Профильді жаңарту кезінде қате орын алды' });
+  }
 });
 
-// Исправляем эту строку - уберем upload.single('file') так как он не нужен для обновления пароля
-router.put('/me/password', auth, (req, res) => {
+// Құпия сөзді өзгерту
+router.put('/me/password', auth, async (req, res) => {
   const { current_password, new_password } = req.body;
 
   // Деректерді тексеру
@@ -106,53 +111,38 @@ router.put('/me/password', auth, (req, res) => {
     return res.status(400).json({ message: 'Барлық қажетті өрістерді толтырыңыз' });
   }
 
-  // Пайдаланушыны алу
-  db.get('SELECT * FROM users WHERE id = ?', [req.user.id], (err, user) => {
-    if (err) {
-      return res.status(500).json({ message: 'Серверде қате орын алды' });
-    }
+  try {
+    // Пайдаланушыны алу
+    const result = await db.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+    
+    const user = result.rows[0];
     
     if (!user) {
       return res.status(404).json({ message: 'Пайдаланушы табылмады' });
     }
 
     // Ағымдағы құпия сөзді тексеру
-    bcrypt.compare(current_password, user.password, (err, isMatch) => {
-      if (err) {
-        return res.status(500).json({ message: 'Серверде қате орын алды' });
-      }
-      
-      if (!isMatch) {
-        return res.status(400).json({ message: 'Ағымдағы құпия сөз дұрыс емес' });
-      }
+    const isMatch = await bcrypt.compare(current_password, user.password);
+    
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Ағымдағы құпия сөз дұрыс емес' });
+    }
 
-      // Жаңа құпия сөзді хэштеу
-      bcrypt.genSalt(10, (err, salt) => {
-        if (err) {
-          return res.status(500).json({ message: 'Серверде қате орын алды' });
-        }
+    // Жаңа құпия сөзді хэштеу
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(new_password, salt);
 
-        bcrypt.hash(new_password, salt, (err, hash) => {
-          if (err) {
-            return res.status(500).json({ message: 'Серверде қате орын алды' });
-          }
+    // Құпия сөзді жаңарту
+    await db.query(
+      'UPDATE users SET password = $1 WHERE id = $2',
+      [hash, req.user.id]
+    );
 
-          // Құпия сөзді жаңарту
-          db.run(
-            'UPDATE users SET password = ? WHERE id = ?',
-            [hash, req.user.id],
-            function(err) {
-              if (err) {
-                return res.status(500).json({ message: 'Құпия сөзді жаңарту кезінде қате орын алды' });
-              }
-
-              res.json({ message: 'Құпия сөз сәтті өзгертілді' });
-            }
-          );
-        });
-      });
-    });
-  });
+    res.json({ message: 'Құпия сөз сәтті өзгертілді' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Құпия сөзді жаңарту кезінде қате орын алды' });
+  }
 });
 
 module.exports = router;

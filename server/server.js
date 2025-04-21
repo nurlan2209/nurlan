@@ -1,11 +1,13 @@
+// server/server.js
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const db = require('./config/database');
+const { pool } = require('./config/database');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const documentRoutes = require('./routes/documents');
 const adminRoutes = require('./routes/admin');
+require('dotenv').config();
 
 // Express қосымшасын құру
 const app = express();
@@ -31,6 +33,14 @@ app.use((err, req, res, next) => {
     success: false,
     message: 'Серверде қате орын алды',
     error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
+
+// Процессты жабу алдында басейнді жабу
+process.on('SIGINT', () => {
+  pool.end(() => {
+    console.log('PostgreSQL пулі жабылды');
+    process.exit(0);
   });
 });
 
