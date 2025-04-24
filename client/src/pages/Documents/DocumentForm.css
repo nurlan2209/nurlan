@@ -1,0 +1,117 @@
+.document-form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.document-form-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #1a73e8;
+}
+
+.document-form {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.document-form-error {
+  background-color: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.document-form-group {
+  margin-bottom: 20px;
+}
+
+.document-form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.document-form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.document-form-input:focus {
+  outline: none;
+  border-color: #1a73e8;
+}
+
+.document-form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.document-form-file-input {
+  padding: 10px 0;
+  width: 100%;
+}
+
+.document-form-submit {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.document-form-submit:hover {
+  background-color: #0d47a1;
+}
+
+/* Добавим стили для предварительного просмотра файла */
+.file-preview {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.file-preview-image {
+  max-width: 100%;
+  max-height: 200px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.file-preview-info {
+  font-size: 0.9rem;
+  color: #757575;
+  word-break: break-all;
+}
+
+/* Адаптивные стили */
+@media (min-width: 768px) {
+  .document-form-container {
+    padding: 20px;
+  }
+  
+  .document-form {
+    padding: 25px;
+  }
+  
+  .document-form-title {
+    font-size: 2rem;
+  }
+  
+  .document-form-submit {
+    width: auto;
+    min-width: 200px;
+  }
+}

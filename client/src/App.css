@@ -1,0 +1,170 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.section {
+  padding: 50px 0;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--primary-dark);
+}
+
+.section-title1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--primary-dark);
+}
+
+.section-description {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  color: var(--text-light);
+}
+
+/* Стили для форм */
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 30px;
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+.form-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: var(--primary-dark);
+  text-align: center;
+}
+
+.form-footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Стили для страниц */
+.page-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Стили для административной панели */
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-title {
+  font-size: 1.8rem;
+  color: var(--primary-dark);
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Стили для таблицы */
+.table-container {
+  overflow-x: auto;
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.data-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Стили для карточек */
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--primary-dark);
+}
+
+.card-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 15px;
+}
+
+.card-content {
+  margin-bottom: 15px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+  .section {
+    padding: 30px 0;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    margin-left: 45px;
+  }
+
+  .section-title1 {
+    font-size: 1.5rem;
+  }
+  
+  .form-container {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,137 @@
+
+  
+  /* Header */
+  .about-header {
+    background: linear-gradient(135deg, #1a73e8 0%, #6c5ce7 100%);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    margin-top: -70px
+  }
+  
+  .about-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  
+  .about-description {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0.9;
+  }
+  
+  /* Main Content */
+  .about-content {
+    padding: 60px 0;
+  }
+  
+  .about-section {
+    display: flex;
+    margin-bottom: 60px;
+    align-items: flex-start;
+  }
+  
+  .section-icon {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(26, 115, 232, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 30px;
+    color: var(--primary-color);
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+  
+  .section-text {
+    flex: 1;
+  }
+  
+  .section-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--primary-dark);
+  }
+  
+  .section-text p {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  /* Contact Section */
+  .contact-section {
+    background-color: var(--bg-color);
+    padding: 60px 0;
+    text-align: center;
+    margin-top: -90px;
+    padding-bottom: 120px;
+  }
+  
+  .contact-info1 {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+  }
+  
+  .contact-item {
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+    padding: 25px;
+    width: 250px;
+  }
+  
+  .contact-item h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--primary-dark);
+  }
+  
+  .contact-item p {
+    color: var(--text-light);
+  }
+  
+  /* Адаптивные стили */
+  @media (max-width: 768px) {
+    .about-title {
+      font-size: 2rem;
+    }
+    
+    .about-section {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .section-icon {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+    
+    .contact-info1 {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .contact-item {
+      width: 100%;
+      max-width: 300px;
+    }
+    .about-header {
+      margin-left: -20px;
+      width: 450px;
+    }
+    .section-title3{
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        color: var(--primary-dark);
+    }
+  }
